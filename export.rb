@@ -57,13 +57,13 @@ sheet = workbook.sheet(0)
 	when "FS"
 		rte = "FS-" + fast_routes_hash[sheet.row(line)[sroutes[agy.to_s]-1]]
 	when "RV"
-		rte = "RV`-" + rvdb_routes_hash[sheet.row(line)[sroutes[agy.to_s]-1]]
+		rte = "RV-" + rvdb_routes_hash[sheet.row(line)[sroutes[agy.to_s]-1]]
 	when "ST"
 		rte = "ST-" + st_routes_hash[sheet.row(line)[sroutes[agy.to_s]-1]]
 	when "VC"
 		rte = "VC-" + vc_routes_hash[sheet.row(line)[sroutes[agy.to_s]-1]]
 	end
-	
+
 	#tranfer before
 	if sheet.row(line)[29] == 1
 		first_bf = agenices_hash[sheet.row(line)[30]]
@@ -73,17 +73,20 @@ sheet = workbook.sheet(0)
 				    third_bf = agenices_hash[sheet.row(line)[44]]
 				end
 		end
-    end
+  end
 
     #tranfer after
     if sheet.row(line)[55] == 1
-		first_bf = agenices_hash[sheet.row(line)[56]]
-		if sheet.row(line)[62] == 1
- 			second_bf = agenices_hash[sheet.row(line)[63]]
+		  first_af = agenices_hash[sheet.row(line)[56]]
+			if sheet.row(line)[62] == 1
+				#p sheet.row(line)[62]
+ 				second_af = agenices_hash[sheet.row(line)[63]]
  				if sheet.row(line)[69] == 1
-				    third_bf = agenices_hash[sheet.row(line)[70]]
+				  third_af = agenices_hash[sheet.row(line)[70]]
+				  p line
+				  p third_af
 				end
-		end
+			end
     end
 
 	# first_af = agenices_hash[sheet.row(line)[56]]
