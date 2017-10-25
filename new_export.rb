@@ -1,7 +1,6 @@
 require 'roo'
 require 'csv'
 require 'json'
-require 'writeexcel'
 
 THIRD_TRANSIT_BEFORE_USED_OR_NOT = 43
 THIRD_TRANSIT_BEFORE = 44
@@ -122,13 +121,7 @@ class ExportData
 				end
 		  end  
 		 end
-		 @errs = @errors.each_slice(3)
-		 CSV.open('data.csv','wb') do |csv|
-		 	 csv << ["ID", "Route", "Route2"]
-		   @errs.each do |error|
-		     csv << error
-		   end
-		 end
+		 generate_csv()
 	end
 
 def find_record(tty,tto,ttr,sheet,rte,line,id,json)
@@ -149,23 +142,33 @@ def find_record(tty,tto,ttr,sheet,rte,line,id,json)
 		return transfer_rte
 end
 
-def evaluate(json,rte,transfer_rte,id)
-	begin 
-	  unless json[transfer_rte].include?(rte)
-			p "#{id} #{rte} | #{transfer_rte} "
-			@errors << id
+private
+	def evaluate(json,rte,transfer_rte,id)
+		begin 
+		  unless json[transfer_rte].include?(rte)
+				p "#{id} #{rte} | #{transfer_rte} "
+				@errors << id
+				@errors << rte 
+				@errors << transfer_rte
+		  end
+		 
+	  rescue
+		  p "Error #{id} | #{rte} | #{transfer_rte}"
+		  @errors << id
 			@errors << rte 
 			@errors << transfer_rte
 	  end
-	 
-  rescue
-	  p "Error #{id} | #{rte} | #{transfer_rte}"
-	  @errors << id
-		@errors << rte 
-		@errors << transfer_rte
-  end
-end
+	end
 
+	def generate_csv
+	 @errs = @errors.each_slice(3)
+	 CSV.open('data.csv','wb') do |csv|
+	 	 csv << ["ID", "Route", "Route2"]
+	   @errs.each do |error|
+	     csv << error
+	   end
+	 end
+	end
 end
 
 ExportData.new.export_data()
