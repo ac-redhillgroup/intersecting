@@ -1,6 +1,7 @@
 require 'roo'
 require 'csv'
 require 'json'
+require 'writeexcel'
 
 THIRD_TRANSIT_BEFORE_USED_OR_NOT = 43
 THIRD_TRANSIT_BEFORE = 44
@@ -36,6 +37,7 @@ class ExportData
 
 	def initialize
 		#create dictionaraies/hashes of the objects
+		@errors = []
 		@fast_routes = %w[1 2 3 4 5 6 7 8 9 20 30 40 90 OTHER]
 		@rvdb_routes = %w[50 52 OTHER]
 		@st_routes = %w[1 2 3 4 5 6 7 8 9 15 17 20 78 80 82 85 OTHER]
@@ -76,8 +78,10 @@ class ExportData
 	end
 	
 	def export_data
+		#reading intersecting dict and parsing it
 		f = File.read("intersect_dict_json.txt")
 		json = JSON.parse(f)
+		#reading spreadsheet
 		workbook = Roo::Spreadsheet.open("SOLANO.xlsx")
 		sheet = workbook.sheet(0)
 		(2..sheet.last_row).each do |line|
@@ -107,9 +111,9 @@ class ExportData
 				first_rte = find_record(FIRST_TRANSIT_BEFORE,FIRST_TRANSIT_OTHER,FIRST_TRANSIT_ROUTE,sheet,rte,line,id,json)
 			end
 
+			#transfer after
 			if sheet.row(line)[FIRST_TRANSIT_AFTER_USED_OR_NOT] == 1
 				first_rte = find_record(FIRST_TRANSIT_AFTER,FIRST_TRANSIT_OTHER_AFTER,FIRST_TRANSIT_ROUTE_AFTER,sheet,rte,line,id,json)
-				#second route after and first route
 				if sheet.row(line)[SECOND_TRANSIT_AFTER_USED_OR_NOT] == 1
 		 			second_rte = find_record(SECOND_TRANSIT_AFTER,SECOND_TRANSIT_OTHER_AFTER,SECOND_TRANSIT_ROUTE_AFTER,sheet,first_rte,line,id,json)
 		 			if sheet.row(line)[THIRD_TRANSIT_AFTER_USED_OR_NOT] == 1
@@ -117,6 +121,13 @@ class ExportData
 		 			end
 				end
 		  end  
+		 end
+		 @errs = @errors.each_slice(3)
+		 CSV.open('data.csv','wb') do |csv|
+		 	 csv << ["ID", "Route", "Route2"]
+		   @errs.each do |error|
+		     csv << error
+		   end
 		 end
 	end
 
@@ -141,10 +152,17 @@ end
 def evaluate(json,rte,transfer_rte,id)
 	begin 
 	  unless json[transfer_rte].include?(rte)
-		p "#{id} #{rte} | #{transfer_rte} "
+			p "#{id} #{rte} | #{transfer_rte} "
+			@errors << id
+			@errors << rte 
+			@errors << transfer_rte
 	  end
+	 
   rescue
 	  p "Error #{id} | #{rte} | #{transfer_rte}"
+	  @errors << id
+		@errors << rte 
+		@errors << transfer_rte
   end
 end
 
