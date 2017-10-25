@@ -124,23 +124,23 @@ class ExportData
 		 generate_csv()
 	end
 
-def find_record(tty,tto,ttr,sheet,rte,line,id,json)
-	tranfer_type = @agenices_hash[sheet.row(line)[tty]]
-		
-		if sheet.row(line)[tto].nil?
-			if tranfer_type == "BA"
-				transfer_rte = "BA"
-				evaluate(json,rte,transfer_rte,id)
+	def find_record(tty,tto,ttr,sheet,rte,line,id,json)
+		tranfer_type = @agenices_hash[sheet.row(line)[tty]]
+			
+			if sheet.row(line)[tto].nil?
+				if tranfer_type == "BA"
+					transfer_rte = "BA"
+					evaluate(json,rte,transfer_rte,id)
+				else
+					transfer_rte = tranfer_type.to_s + '-' + sheet.row(line)[ttr].to_s
+					evaluate(json,rte,transfer_rte,id)
+				end
 			else
-				transfer_rte = tranfer_type.to_s + '-' + sheet.row(line)[ttr].to_s
+				transfer_rte = tranfer_type.to_s + '-' + sheet.row(line)[tto].to_s
 				evaluate(json,rte,transfer_rte,id)
 			end
-		else
-			transfer_rte = tranfer_type.to_s + '-' + sheet.row(line)[tto].to_s
-			evaluate(json,rte,transfer_rte,id)
-		end
-		return transfer_rte
-end
+			return transfer_rte
+	end
 
 private
 	def evaluate(json,rte,transfer_rte,id)
