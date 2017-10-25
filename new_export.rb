@@ -35,6 +35,8 @@ THIRD_TRANSIT_ROUTE_AFTER = 72
 class ExportData
 
 	def initialize
+		#reading intersecting dict and parsing it
+		@json = JSON.parse(File.read("intersect_dict_json.txt"))
 		#create dictionaraies/hashes of the objects
 		@errors = []
 		@fast_routes = %w[1 2 3 4 5 6 7 8 9 20 30 40 90 OTHER]
@@ -77,9 +79,6 @@ class ExportData
 	end
 	
 	def export_data
-		#reading intersecting dict and parsing it
-		f = File.read("intersect_dict_json.txt")
-		json = JSON.parse(f)
 		#reading spreadsheet
 		workbook = Roo::Spreadsheet.open("SOLANO.xlsx")
 		sheet = workbook.sheet(0)
@@ -100,23 +99,23 @@ class ExportData
 			id = sheet.row(line)[0].to_s
 			#tranfer before
 			if sheet.row(line)[THIRD_TRANSIT_BEFORE_USED_OR_NOT] == 1
-				third_rte = find_record(THIRD_TRANSIT_BEFORE,THIRD_TRANSIT_OTHER,THIRD_TRANSIT_ROUTE,sheet,rte,line,id,json)
-				second_rte = find_record(SECOND_TRANSIT_BEFORE,SECOND_TRANSIT_OTHER,SECOND_TRANSIT_ROUTE,sheet,third_rte,line,id,json)
-				first_rte = find_record(FIRST_TRANSIT_BEFORE,FIRST_TRANSIT_OTHER,FIRST_TRANSIT_ROUTE,sheet,second_rte,line,id,json)
+				third_rte = find_record(THIRD_TRANSIT_BEFORE,THIRD_TRANSIT_OTHER,THIRD_TRANSIT_ROUTE,sheet,rte,line,id)
+				second_rte = find_record(SECOND_TRANSIT_BEFORE,SECOND_TRANSIT_OTHER,SECOND_TRANSIT_ROUTE,sheet,third_rte,line,id)
+				first_rte = find_record(FIRST_TRANSIT_BEFORE,FIRST_TRANSIT_OTHER,FIRST_TRANSIT_ROUTE,sheet,second_rte,line,id)
 			elsif sheet.row(line)[SECOND_TRANSIT_BEFORE_USED_OR_NOT] == 1
-				second_rte = find_record(SECOND_TRANSIT_BEFORE,SECOND_TRANSIT_OTHER,SECOND_TRANSIT_ROUTE,sheet,rte,line,id,json)
-				first_rte = find_record(FIRST_TRANSIT_BEFORE,FIRST_TRANSIT_OTHER,FIRST_TRANSIT_ROUTE,sheet,second_rte,line,id,json)
+				second_rte = find_record(SECOND_TRANSIT_BEFORE,SECOND_TRANSIT_OTHER,SECOND_TRANSIT_ROUTE,sheet,rte,line,id)
+				first_rte = find_record(FIRST_TRANSIT_BEFORE,FIRST_TRANSIT_OTHER,FIRST_TRANSIT_ROUTE,sheet,second_rte,line,id)
 			elsif sheet.row(line)[FIRST_TRANSIT_BEFORE_USED_OR_NOT] == 1
-				first_rte = find_record(FIRST_TRANSIT_BEFORE,FIRST_TRANSIT_OTHER,FIRST_TRANSIT_ROUTE,sheet,rte,line,id,json)
+				first_rte = find_record(FIRST_TRANSIT_BEFORE,FIRST_TRANSIT_OTHER,FIRST_TRANSIT_ROUTE,sheet,rte,line,id)
 			end
 
 			#transfer after
 			if sheet.row(line)[FIRST_TRANSIT_AFTER_USED_OR_NOT] == 1
-				first_rte = find_record(FIRST_TRANSIT_AFTER,FIRST_TRANSIT_OTHER_AFTER,FIRST_TRANSIT_ROUTE_AFTER,sheet,rte,line,id,json)
+				first_rte = find_record(FIRST_TRANSIT_AFTER,FIRST_TRANSIT_OTHER_AFTER,FIRST_TRANSIT_ROUTE_AFTER,sheet,rte,line,id)
 				if sheet.row(line)[SECOND_TRANSIT_AFTER_USED_OR_NOT] == 1
-		 			second_rte = find_record(SECOND_TRANSIT_AFTER,SECOND_TRANSIT_OTHER_AFTER,SECOND_TRANSIT_ROUTE_AFTER,sheet,first_rte,line,id,json)
+		 			second_rte = find_record(SECOND_TRANSIT_AFTER,SECOND_TRANSIT_OTHER_AFTER,SECOND_TRANSIT_ROUTE_AFTER,sheet,first_rte,line,id)
 		 			if sheet.row(line)[THIRD_TRANSIT_AFTER_USED_OR_NOT] == 1
-		 				third_rte = find_record(THIRD_TRANSIT_AFTER,THIRD_TRANSIT_OTHER_AFTER,THIRD_TRANSIT_ROUTE_AFTER,sheet,second_rte,line,id,json)
+		 				third_rte = find_record(THIRD_TRANSIT_AFTER,THIRD_TRANSIT_OTHER_AFTER,THIRD_TRANSIT_ROUTE_AFTER,sheet,second_rte,line,id)
 		 			end
 				end
 		  end  
@@ -124,35 +123,34 @@ class ExportData
 		 generate_csv()
 	end
 
-	def find_record(tty,tto,ttr,sheet,rte,line,id,json)
+	def find_record(tty,tto,ttr,sheet,rte,line,id)
 		tranfer_type = @agenices_hash[sheet.row(line)[tty]]
 			
 			if sheet.row(line)[tto].nil?
 				if tranfer_type == "BA"
 					transfer_rte = "BA"
-					evaluate(json,rte,transfer_rte,id)
+					evaluate(rte,transfer_rte,id)
 				else
 					transfer_rte = tranfer_type.to_s + '-' + sheet.row(line)[ttr].to_s
-					evaluate(json,rte,transfer_rte,id)
+					evaluate(rte,transfer_rte,id)
 				end
 			else
 				transfer_rte = tranfer_type.to_s + '-' + sheet.row(line)[tto].to_s
-				evaluate(json,rte,transfer_rte,id)
+				evaluate(rte,transfer_rte,id)
 			end
 			return transfer_rte
 	end
 
 private
-	def evaluate(json,rte,transfer_rte,id)
+	def evaluate(rte,transfer_rte,id)
 		begin 
-		  unless json[transfer_rte].include?(rte)
+		  unless @json[transfer_rte].include?(rte)
 				p "#{id} #{rte} | #{transfer_rte} "
 				@errors << id
 				@errors << rte 
 				@errors << transfer_rte
 		  end
-		 
-	  rescue
+	 rescue
 		  p "Error #{id} | #{rte} | #{transfer_rte}"
 		  @errors << id
 			@errors << rte 
