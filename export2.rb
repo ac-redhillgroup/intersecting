@@ -1,7 +1,40 @@
 require 'roo'
 require 'csv'
 require 'json'
-#create dictionaraies/hashes of the objects
+
+THIRD_TRANSIT_BEFORE_USED_OR_NOT = 43
+THIRD_TRANSIT_BEFORE = 44
+THIRD_TRANSIT_OTHER = 45
+THIRD_TRANSIT_ROUTE = 46
+
+SECOND_TRANSIT_BEFORE_USED_OR_NOT = 36
+SECOND_TRANSIT_BEFORE = 37
+SECOND_TRANSIT_OTHER = 38
+SECOND_TRANSIT_ROUTE = 39
+
+FIRST_TRANSIT_BEFORE_USED_OR_NOT = 29
+FIRST_TRANSIT_BEFORE = 30
+FIRST_TRANSIT_OTHER = 31
+FIRST_TRANSIT_ROUTE = 32
+
+FIRST_TRANSIT_AFTER_USED_OR_NOT = 55
+FIRST_TRANSIT_AFTER = 56
+FIRST_TRANSIT_OTHER_AFTER = 57
+FIRST_TRANSIT_ROUTE_AFTER = 58
+
+SECOND_TRANSIT_AFTER_USED_OR_NOT = 62
+SECOND_TRANSIT_AFTER = 63
+SECOND_TRANSIT_OTHER_AFTER = 64
+SECOND_TRANSIT_ROUTE_AFTER = 65
+
+THIRD_TRANSIT_AFTER_USED_OR_NOT = 69
+THIRD_TRANSIT_AFTER = 70
+THIRD_TRANSIT_OTHER_AFTER = 71
+THIRD_TRANSIT_ROUTE_AFTER = 72
+
+
+def export_data
+	#create dictionaraies/hashes of the objects
 fast_routes = %w[1 2 3 4 5 6 7 8 9 20 30 40 90 OTHER]
 rvdb_routes = %w[50 52 OTHER]
 st_routes = %w[1 2 3 4 5 6 7 8 9 15 17 20 78 80 82 85 OTHER]
@@ -40,15 +73,10 @@ sagencies.each.with_index(1) do |route,idx|
   sagencies_hash[idx] = route
 end
 
-# [sagencies_hash,fast_routes_hash,vc_routes_hash,st_routes_hash,rvdb_routes_hash].each do |dic|
-# 	print dic
-# 	puts ""
-# end
 
 f = File.read("intersect_dict_json.txt")
 json = JSON.parse(f)
-p json["BA"].include?(" SF-T-Owl")
-workbook = Roo::Spreadsheet.open("SOLANO.xlsx")
+  workbook = Roo::Spreadsheet.open("SOLANO.xlsx")
 sheet = workbook.sheet(0)
 (2..sheet.last_row).each do |line|
  	#this piece of code is to get the current agency and route
@@ -66,117 +94,115 @@ sheet = workbook.sheet(0)
 	end
 	id = sheet.row(line)[0].to_s
 	#tranfer before
-CSV.open("abc.csv","w") do |csv|
-	csv << [1,1,1,1]
-	if sheet.row(line)[43] == 1
-		third_bf = agenices_hash[sheet.row(line)[44]]
-		csv << [1,2,3]
-		if sheet.row(line)[45].nil?
+	if sheet.row(line)[THIRD_TRANSIT_BEFORE_USED_OR_NOT] == 1
+		third_bf = agenices_hash[sheet.row(line)[THIRD_TRANSIT_BEFORE]]
+		
+		if sheet.row(line)[THIRD_TRANSIT_OTHER].nil?
 			if third_bf == "BA"
 				third_rte = "BA"
 				begin 
 					unless json[third_bf].include?(rte)
 						p "#{id} #{rte} | #{third_rte} | Third & Current"
-						csv << [id,rte,third_rte]
+						# csv << [id,rte,third_rte]
 					end
 				rescue
 	  			p "Error #{id} Before 3rd  #{rte} | #{third_rte}"
-	  			  csv << [id,rte,third_rte] 
+	  			  # csv << [id,rte,third_rte] 
 				end
 			else
-				third_rte = third_bf.to_s + '-' + sheet.row(line)[46].to_s
+				third_rte = third_bf.to_s + '-' + sheet.row(line)[THIRD_TRANSIT_ROUTE].to_s
 				begin 
 					unless json[third_rte].include?(rte)
 						p "#{id} #{rte} | #{third_rte} | Third & Current"
-						csv << [id,rte,third_rte]
+						# csv << [id,rte,third_rte]
 					end
 				rescue
 	  			p "Error #{id} Before 3rd  #{rte} | #{third_rte}"
-	  				csv << [id,rte,third_rte]
+	  				# csv << [id,rte,third_rte]
 				end
 			end
 		else
-			third_rte = third_bf.to_s + '-' + sheet.row(line)[45].to_s
+			third_rte = third_bf.to_s + '-' + sheet.row(line)[THIRD_TRANSIT_OTHER].to_s
 			begin 
 				unless json[third_bf].include?(rte)
 					p "#{id} #{rte} | #{third_rte} | Third & Current"
-					csv << [id,rte,third_rte]
+					# csv << [id,rte,third_rte]
 				end
 			rescue
 	  			p "Error #{id} #{rte} | #{third_rte} | Third & Current OTHER"
-	  			csv << [id,rte,third_rte]
+	  			# csv << [id,rte,third_rte]
 			end
 		end
 
 		#SECOND BEFORE
-		second_bf = agenices_hash[sheet.row(line)[37]]
- 			if sheet.row(line)[38].nil?
+		second_bf = agenices_hash[sheet.row(line)[SECOND_TRANSIT_BEFORE]]
+ 			if sheet.row(line)[SECOND_TRANSIT_OTHER].nil?
  				if second_bf == 'BA' 
  					second_rte = 'BA'
 	 				begin 
 						unless json[second_bf].include?(third_rte)
 							p "#{id} #{third_rte} | #{second_rte} | Third & Second"
-							csv << [id,second_rte,third_rte]
+							# csv << [id,second_rte,third_rte]
 						end
 	 				rescue
 	 			  	 p "Error #{id} #{third_rte} | #{second_rte} | Third & Second"
-	 			  	 csv << [id,second_rte,third_rte]
+	 			  	 # csv << [id,second_rte,third_rte]
 	 				end
  				else
- 					second_rte = second_bf.to_s + '-' + sheet.row(line)[39].to_s
+ 					second_rte = second_bf.to_s + '-' + sheet.row(line)[SECOND_TRANSIT_ROUTE].to_s
  					begin 
 						unless json[second_rte].include?(third_rte)
 							p "#{id} #{third_rte} | #{second_rte} | Third & Second"
-							csv << [id,second_rte,third_rte]
+							# csv << [id,second_rte,third_rte]
 						end
  					rescue
  			  		p "Error #{id} #{third_rte} | #{second_rte} | Third & Second"
- 			  			csv << [id,second_rte,third_rte]
+ 			  			# csv << [id,second_rte,third_rte]
  					end
  				end
  			else
- 				second_rte = second_bf.to_s + '-' + sheet.row(line)[38].to_s
+ 				second_rte = second_bf.to_s + '-' + sheet.row(line)[SECOND_TRANSIT_OTHER].to_s
 	 			begin 
 					unless json[second_rte].include?(third_rte)
 						p "#{id} #{second_rte} | #{third_rte} | Third & Second"
-						csv << [id,second_rte,third_rte]
+						# csv << [id,second_rte,third_rte]
 					end
 				rescue
 		  			p "Error #{id} #{second_rte} | #{third_rte} | Third & Second Before 2nd OTHER"
-		  			csv << [id,second_rte,third_rte]
+		  			# csv << [id,second_rte,third_rte]
 				end
  			end
 
 		#FIRST BEFORE
-		first_bf = agenices_hash[sheet.row(line)[30]]
+		first_bf = agenices_hash[sheet.row(line)[FIRST_TRANSIT_BEFORE]]
 		#first route before and current route
-		if sheet.row(line)[31].nil? #if not other
+		if sheet.row(line)[FIRST_TRANSIT_OTHER].nil? #if not other
 			#BART LOGIC
 			if first_bf == "BA"
 				first_rte = "BA"
 				begin 
 					unless json[first_bf].include?(second_rte)
 						p "#{id} #{first_rte} | #{second_rte} | First & Second"
-						csv << [id,first_rte,second_rte]
+						#csv << [id,first_rte,second_rte]
 					end
  				rescue
  			  	p "Error #{id} #{id} #{first_rte} | #{second_rte} | First & Second Before 1st"
- 			  	csv << [id,first_rte,second_rte]
+ 			  	#csv << [id,first_rte,second_rte]
  				end
 			else
-				first_rte = first_bf.to_s + '-' + sheet.row(line)[32].to_s
+				first_rte = first_bf.to_s + '-' + sheet.row(line)[FIRST_TRANSIT_ROUTE].to_s
 				begin 
 					unless json[first_rte].include?(second_rte)
  						p "#{id} #{first_rte} | #{second_rte} | First & Second"
- 						csv << [id,first_rte,second_rte]
+ 						#csv << [id,first_rte,second_rte]
  				  end
  				rescue
  			  	p "Error #{id} #{first_rte} | #{second_rte} | First & Second Before 1st"
- 			  	csv << [id,first_rte,second_rte]
+ 			  	#csv << [id,first_rte,second_rte]
  				end
 			end
 		else
-			first_rte = first_bf.to_s + '-' + sheet.row(line)[31].to_s
+			first_rte = first_bf.to_s + '-' + sheet.row(line)[FIRST_TRANSIT_OTHER].to_s
 			begin 
 				unless json[first_rte].include?(second_rte)
 					p "#{id} #{first_rte} | #{second_rte} | First & Second"
@@ -188,9 +214,9 @@ CSV.open("abc.csv","w") do |csv|
 			end
 		end
 
-	elsif sheet.row(line)[36] == 1
-			second_bf = agenices_hash[sheet.row(line)[37]]
- 			if sheet.row(line)[38].nil?
+	elsif sheet.row(line)[SECOND_TRANSIT_BEFORE_USED_OR_NOT] == 1
+			second_bf = agenices_hash[sheet.row(line)[SECOND_TRANSIT_BEFORE]]
+ 			if sheet.row(line)[SECOND_TRANSIT_OTHER].nil?
  				if second_bf == 'BA' 
  						second_rte = 'BA'
 	 				begin 
@@ -203,7 +229,7 @@ CSV.open("abc.csv","w") do |csv|
 	 			  	csv << [id,rte,second_rte]
 	 				end
  				else
- 					second_rte = second_bf.to_s + '-' + sheet.row(line)[39].to_s
+ 					second_rte = second_bf.to_s + '-' + sheet.row(line)[SECOND_TRANSIT_ROUTE].to_s
  					begin 
 						unless json[second_rte].include?(rte)
 							p "#{id} #{rte} | #{second_rte} | Second & Current w/o Bart"
@@ -215,7 +241,7 @@ CSV.open("abc.csv","w") do |csv|
  					end
  				end
  			else
- 				second_rte = second_bf.to_s + '-' + sheet.row(line)[38].to_s
+ 				second_rte = second_bf.to_s + '-' + sheet.row(line)[SECOND_TRANSIT_OTHER].to_s
 	 			begin 
 					unless json[second_rte].include?(rte)
 						p "#{id} #{second_rte} | #{rte} | Second & Current"
@@ -228,9 +254,9 @@ CSV.open("abc.csv","w") do |csv|
  			end
 
 			#FIRST BEFORE
-			first_bf = agenices_hash[sheet.row(line)[30]]
+			first_bf = agenices_hash[sheet.row(line)[FIRST_TRANSIT_BEFORE]]
 			#first route before and current route
-			if sheet.row(line)[31].nil? #if not other
+			if sheet.row(line)[FIRST_TRANSIT_OTHER].nil? #if not other
 				#BART LOGIC
 				if first_bf == "BA"
 					first_rte = 'BA'
@@ -243,33 +269,33 @@ CSV.open("abc.csv","w") do |csv|
 	 			  	p "Error #{id} #{second_rte} | #{first_rte} | Second First with"
 	 				end
 				else
-					first_rte = first_bf.to_s + '-' + sheet.row(line)[32].to_s
+					first_rte = first_bf.to_s + '-' + sheet.row(line)[FIRST_TRANSIT_ROUTE].to_s
 					begin 
 						unless json[first_rte].include?(second_rte)
 	 						p "#{id} : #{second_rte} | #{first_rte}  Second & First w/o Bart"
-	 						csv << [id,first_rte,second_rte]
+	 						#csv << [id,first_rte,second_rte]
 	 				  end
 	 				rescue
 	 			  	p "Error #{id} #{second_rte} | #{first_rte} "
-	 			  	csv << [id,first_rte,second_rte]
+	 			  	#csv << [id,first_rte,second_rte]
 	 				end
 				end
 			else
-				first_rte = first_bf.to_s + '-' + sheet.row(line)[31].to_s
+				first_rte = first_bf.to_s + '-' + sheet.row(line)[FIRST_TRANSIT_OTHER].to_s
 				begin 
 					unless json[first_rte].include?(second_rte)
 						p "#{id} #{second_rte} | #{first_rte} | Second & First"
-						csv << [id,first_rte,second_rte]
+						#csv << [id,first_rte,second_rte]
 					end
 				rescue
 		  			p "Error #{id} #{second_rte} | #{first_rte} | Second & First Before 1st OTHER"
-		  			csv << [id,first_rte,second_rte]
+		  			#csv << [id,first_rte,second_rte]
 				end
 			end
-	elsif sheet.row(line)[29] == 1
-		first_bf = agenices_hash[sheet.row(line)[30]]
+	elsif sheet.row(line)[FIRST_TRANSIT_BEFORE_USED_OR_NOT] == 1
+		first_bf = agenices_hash[sheet.row(line)[FIRST_TRANSIT_BEFORE]]
 		#first route before and current route
-		if sheet.row(line)[31].nil? #if not other
+		if sheet.row(line)[FIRST_TRANSIT_OTHER].nil? #if not other
 			
 			#BART LOGIC
 			if first_bf == "BA"
@@ -277,42 +303,42 @@ CSV.open("abc.csv","w") do |csv|
 				begin 
 					unless json[first_bf].include?(rte)
 						p "#{id} #{rte} | #{first_bf} | Current & First"
-						csv << [id,rte,first_rte]
+						#csv << [id,rte,first_rte]
 					end
  				rescue
  			  	p "Error #{id}:  #{rte} | #{first_rte}  Current & First "
- 			  	csv << [id,rte,first_rte]
+ 			  	#csv << [id,rte,first_rte]
  				end
 			else
-				first_rte = first_bf.to_s + '-' + sheet.row(line)[32].to_s
+				first_rte = first_bf.to_s + '-' + sheet.row(line)[FIRST_TRANSIT_ROUTE].to_s
 				begin 
 					unless json[first_rte].include?(rte)
  						p "#{id} : #{rte} | #{first_rte}  Current & First "
- 						csv << [id,rte,first_rte]
+ 						#csv << [id,rte,first_rte]
  				  end
  				rescue
  			  	p "Error #{id}: #{rte} | #{first_rte}  Current & First "
- 			  	csv << [id,rte,first_rte]
+ 			  	#csv << [id,rte,first_rte]
  				end
 			end
 		else
-			first_rte = first_bf.to_s + '-' + sheet.row(line)[31].to_s
+			first_rte = first_bf.to_s + '-' + sheet.row(line)[FIRST_TRANSIT_OTHER].to_s
 			begin 
 				unless json[first_rte].include?(rte)
 					p "#{id} #{rte} | #{first_rte} | Current & First"
-					csv << [id,rte,first_rte]
+					#csv << [id,rte,first_rte]
 				end
 			rescue
 	  			p "Error #{id} #{rte} | #{first_rte} | Current & First Before 1st OTHER"
-	  			csv << [id,rte,first_rte]
+	  			#csv << [id,rte,first_rte]
 			end
 		end
 	end
 
-	if sheet.row(line)[55] == 1
-		first_af = agenices_hash[sheet.row(line)[56]]
+	if sheet.row(line)[FIRST_TRANSIT_AFTER_USED_OR_NOT] == 1
+		first_af = agenices_hash[sheet.row(line)[FIRST_TRANSIT_AFTER]]
 		#first route before and current route
-		if sheet.row(line)[57].nil? #if not other
+		if sheet.row(line)[FIRST_TRANSIT_OTHER_AFTER].nil? #if not other
 			
 			#BART LOGIC
 			if first_af == "BA"
@@ -320,124 +346,121 @@ CSV.open("abc.csv","w") do |csv|
 				begin 
 					unless json[first_af].include?(rte)
 						p "#{id} #{rte} | #{first_rte} | Current & First"
-						csv << [id,rte,first_rte]
+						##csv << [id,rte,first_rte]
 					end
  				rescue
  			  	p "Error #{id} #{rte} | #{first_rte} | Current & First"
- 			  	csv << [id,rte,first_rte]
+ 			  	##csv << [id,rte,first_rte]
  				end
 			else
-				first_rte = first_af.to_s + '-' + sheet.row(line)[58].to_s
+				first_rte = first_af.to_s + '-' + sheet.row(line)[FIRST_TRANSIT_ROUTE_AFTER].to_s
 				begin 
 					unless json[first_rte].include?(rte)
  						p "#{id} : #{rte} | #{first_rte} Current & first"
- 						csv << [id,rte,first_rte]
+ 						##csv << [id,rte,first_rte]
  				  end
  				rescue
  			  	p "Error #{id}: #{rte} | #{first_rte} Current & first"
- 			  	csv << [id,rte,first_rte]
+ 			  	##csv << [id,rte,first_rte]
  				end
 			end
 		else
-			first_rte = first_af.to_s + '-' + sheet.row(line)[57].to_s
+			first_rte = first_af.to_s + '-' + sheet.row(line)[FIRST_TRANSIT_OTHER_AFTER].to_s
 			begin 
 					unless json[first_rte].include?(rte)
  						p "#{id} : #{rte} | #{first_rte} Current & First"
- 						csv << [id,rte,first_rte]
+ 						##csv << [id,rte,first_rte]
  				  end
  				rescue
  			  	p "Error #{id} #{rte} | #{first_rte} Current & First : First After Other"
- 			  	csv << [id,rte,first_rte]
+ 			  	##csv << [id,rte,first_rte]
  				end
 		end
 		#first route after and current end
 		#second route after and first route
-		if sheet.row(line)[62] == 1
- 			second_af = agenices_hash[sheet.row(line)[63]]
- 			if sheet.row(line)[64].nil?
+		if sheet.row(line)[SECOND_TRANSIT_AFTER_USED_OR_NOT] == 1
+ 			second_af = agenices_hash[sheet.row(line)[SECOND_TRANSIT_AFTER]]
+ 			if sheet.row(line)[SECOND_TRANSIT_OTHER_AFTER].nil?
  				if second_af == 'BA' 
  					second_rte = "BA"
 	 				begin 
 						unless json[second_af].include?(first_rte)
 							p "#{id} #{first_rte} | #{second_af} | First & Second "
-							csv << [id,first_rte,second_rte]
+							#csv << [id,first_rte,second_rte]
 						end
 	 				rescue
 	 			  	p "Error #{id} #{first_rte} | #{second_af} | First & Second "
-	 			  	csv << [id,first_rte,second_rte]
+	 			  	#csv << [id,first_rte,second_rte]
 	 				end
  				else
- 					second_rte = second_af.to_s + '-' + sheet.row(line)[65].to_s
+ 					second_rte = second_af.to_s + '-' + sheet.row(line)[SECOND_TRANSIT_ROUTE_AFTER].to_s
  					begin 
 						unless json[second_rte].include?(first_rte)
 							p "#{id} #{first_rte} | #{second_rte} | First & Second"
-							csv << [id,first_rte,second_rte]
+							#csv << [id,first_rte,second_rte]
 						end
  					rescue
  			  		p "Error #{id} #{first_rte} | #{second_rte} | First & Second : 2nd after"
- 			  		csv << [id,first_rte,second_rte]
+ 			  		#csv << [id,first_rte,second_rte]
  					end
  				end
  			else
- 				second_rte = second_af.to_s + '-' + sheet.row(line)[64].to_s
+ 				second_rte = second_af.to_s + '-' + sheet.row(line)[SECOND_TRANSIT_OTHER_AFTER].to_s
  				begin 
 						unless json[second_rte].include?(first_rte)
 							p "#{id} #{first_rte} | #{second_rte} | First & Second"
-							csv << [id,first_rte,second_rte]
+							#csv << [id,first_rte,second_rte]
 						end
  					rescue
  			  		p "Error #{id} #{first_rte} | #{second_rte} | First & Second : 2nd after OTHER"
- 			  		csv << [id,first_rte,second_rte]
+ 			  		#csv << [id,first_rte,second_rte]
  					end
  			end
- 			if sheet.row(line)[69] == 1
- 				third_af = agenices_hash[sheet.row(line)[70]]
+ 			if sheet.row(line)[THIRD_TRANSIT_AFTER_USED_OR_NOT] == 1
+ 				third_af = agenices_hash[sheet.row(line)[THIRD_TRANSIT_AFTER]]
  				#p "#{second_rte} | #{third_rte} #{json[third_rte].include?(second_rte)}"
- 				if sheet.row(line)[71].nil?
+ 				if sheet.row(line)[THIRD_TRANSIT_OTHER_AFTER].nil?
  					
  					if third_af == "BA"
  						third_rte = "BA"
  						begin 
 							unless json[third_af].include?(second_rte)
 								p "#{id} #{second_rte} | #{third_af} | Second & third"
-								csv << [id,second_rte,third_rte]
+								#csv << [id,second_rte,third_rte]
 							end
 	 					rescue
 	 			  		p "Error #{id} #{second_rte} | #{third_af} 3rd AFTER"
-	 			  		csv << [id,second_rte,third_rte]
+	 			  		#csv << [id,second_rte,third_rte]
 	 					end
  					else
- 						third_rte = third_af.to_s + '-' + sheet.row(line)[72].to_s
+ 						third_rte = third_af.to_s + '-' + sheet.row(line)[THIRD_TRANSIT_ROUTE_AFTER].to_s
  						begin 
 							unless json[third_rte].include?(second_rte)
 								p "#{id} #{second_rte} | #{third_rte} | Second & Third"
-								csv << [id,second_rte,third_rte]
+								#csv << [id,second_rte,third_rte]
 							end
 	 					rescue
 	 			  		p "Error #{id} 3rd AFTER #{second_rte} | #{third_rte}"
-	 			  		csv << [id,second_rte,third_rte]
+	 			  		#csv << [id,second_rte,third_rte]
 	 					end
  					end
  				else
- 					third_rte = third_af.to_s + '-' + sheet.row(line)[71].to_s
+ 					third_rte = third_af.to_s + '-' + sheet.row(line)[THIRD_TRANSIT_OTHER_AFTER].to_s
  					begin 
 						unless json[third_rte].include?(second_rte)
 							p "#{id} #{second_rte} | #{third_rte} | Second & Third"
-							csv << [id,second_rte,third_rte]
+							#csv << [id,second_rte,third_rte]
 						end
 	 					rescue
 	 			  		p "Error #{id} 3rd AFTER #{second_rte} | #{third_rte}"
-	 			  		csv << [id,second_rte,third_rte]
+	 			  		#csv << [id,second_rte,third_rte]
 	 					end
  				end
 			end
 		end
   end  
-
-
-end
-	# # first_af = agenices_hash[sheet.row(line)[56]]
- #    # print first_bf
+ end
+	
 end
 
-
+export_data
