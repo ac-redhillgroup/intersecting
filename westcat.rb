@@ -1,36 +1,36 @@
 require 'roo'
 require 'csv'
 require 'json'
-#these constant values are the column number from the excel file
-THIRD_TRANSIT_BEFORE_USED_OR_NOT = 43
-THIRD_TRANSIT_BEFORE = 44
-THIRD_TRANSIT_OTHER = 45
-THIRD_TRANSIT_ROUTE = 46
 
-SECOND_TRANSIT_BEFORE_USED_OR_NOT = 36
-SECOND_TRANSIT_BEFORE = 37
-SECOND_TRANSIT_OTHER = 38
-SECOND_TRANSIT_ROUTE = 39
+THIRD_TRANSIT_BEFORE_USED_OR_NOT = 35
+THIRD_TRANSIT_BEFORE = 36
+THIRD_TRANSIT_OTHER = 37
+THIRD_TRANSIT_ROUTE = 38
 
-FIRST_TRANSIT_BEFORE_USED_OR_NOT = 29
-FIRST_TRANSIT_BEFORE = 30
-FIRST_TRANSIT_OTHER = 31
-FIRST_TRANSIT_ROUTE = 32
+SECOND_TRANSIT_BEFORE_USED_OR_NOT = 28
+SECOND_TRANSIT_BEFORE = 29
+SECOND_TRANSIT_OTHER = 30
+SECOND_TRANSIT_ROUTE = 31
 
-FIRST_TRANSIT_AFTER_USED_OR_NOT = 55
-FIRST_TRANSIT_AFTER = 56
-FIRST_TRANSIT_OTHER_AFTER = 57
-FIRST_TRANSIT_ROUTE_AFTER = 58
+FIRST_TRANSIT_BEFORE_USED_OR_NOT = 21
+FIRST_TRANSIT_BEFORE = 22
+FIRST_TRANSIT_OTHER = 23
+FIRST_TRANSIT_ROUTE = 24
 
-SECOND_TRANSIT_AFTER_USED_OR_NOT = 62
-SECOND_TRANSIT_AFTER = 63
-SECOND_TRANSIT_OTHER_AFTER = 64
-SECOND_TRANSIT_ROUTE_AFTER = 65
+FIRST_TRANSIT_AFTER_USED_OR_NOT = 47
+FIRST_TRANSIT_AFTER = 48
+FIRST_TRANSIT_OTHER_AFTER = 49
+FIRST_TRANSIT_ROUTE_AFTER = 50
 
-THIRD_TRANSIT_AFTER_USED_OR_NOT = 69
-THIRD_TRANSIT_AFTER = 70
-THIRD_TRANSIT_OTHER_AFTER = 71
-THIRD_TRANSIT_ROUTE_AFTER = 72
+SECOND_TRANSIT_AFTER_USED_OR_NOT = 54
+SECOND_TRANSIT_AFTER = 55
+SECOND_TRANSIT_OTHER_AFTER = 56
+SECOND_TRANSIT_ROUTE_AFTER = 57
+
+THIRD_TRANSIT_AFTER_USED_OR_NOT = 61
+THIRD_TRANSIT_AFTER = 62
+THIRD_TRANSIT_OTHER_AFTER = 63
+THIRD_TRANSIT_ROUTE_AFTER = 64
 
 class ExportData
 
@@ -39,34 +39,10 @@ class ExportData
 		@json = JSON.parse(File.read("intersect_dict_json.txt"))
 		#create dictionaraies/hashes of the objects
 		@errors = []
-		@fast_routes = %w[1 2 3 4 5 6 7 8 9 20 30 40 90 OTHER]
-		@rvdb_routes = %w[50 52 OTHER]
-		@st_routes = %w[1 2 3 4 5 6 7 8 9 15 17 20 78 80 82 85 OTHER]
-		@vc_routes = %w[1 2 4 5 6 8 OTHER]
-		@sagencies = %w[FS RV ST VC]
+
+		@sagencies = %w[10 11 12 15 16 17 18 19 30Z C3 JR JL JX JPX LYNX OTHER]
 		@agencies = %w[3D AC AY BA CC FS GG RV SF SM ST VC VN WC WH OTHER]
-		@sroutes = {"1" => 4 , "2" => 6,"3" => 8, "4" => 10}
-
-		@rvdb_routes_hash = {}
-		@rvdb_routes.each.with_index(1) do |route,idx|
-		  @rvdb_routes_hash[idx] = route
-		end
-
-		@fast_routes_hash = {}
-		@fast_routes.each.with_index(1) do |route,idx|
-		  @fast_routes_hash[idx] = route
-		end
-
-		@st_routes_hash = {}
-		@st_routes.each.with_index(1) do |route,idx|
-		  @st_routes_hash[idx] = route
-		end
-
-		@vc_routes_hash = {}
-		@vc_routes.each.with_index(1) do |route,idx|
-		  @vc_routes_hash[idx] = route
-		end
-
+		
 		@agenices_hash = {}
 		@agencies.each.with_index(1) do |route,idx|
 		  @agenices_hash[idx] = route
@@ -86,16 +62,7 @@ class ExportData
 		 	#this piece of code is to get the current agency and route
 			agy = sheet.row(line)[2]
 			curr = @sagencies_hash[agy]
-			case curr
-			when "FS"
-				rte = "FS-" + @fast_routes_hash[sheet.row(line)[@sroutes[agy.to_s]-1]]
-			when "RV"
-				rte = "RV-" + @rvdb_routes_hash[sheet.row(line)[@sroutes[agy.to_s]-1]]
-			when "ST"
-				rte = "ST-" + @st_routes_hash[sheet.row(line)[@sroutes[agy.to_s]-1]]
-			when "VC"
-				rte = "VC-" + @vc_routes_hash[sheet.row(line)[@sroutes[agy.to_s]-1]]
-			end
+			rte = "WC-" + curr
 			id = sheet.row(line)[0].to_s
 			#tranfer before
 			if sheet.row(line)[THIRD_TRANSIT_BEFORE_USED_OR_NOT] == 1
@@ -124,7 +91,7 @@ class ExportData
 	end
 
 	def find_record(tty,tto,ttr,sheet,rte,line,id)
-		tranfer_type = @agenices_hash[sheet.row(line)[tty]]
+		tranfer_type = @agenices_hash[sheet.row(line)[tty]]  #code might change for WS
 			
 			if sheet.row(line)[tto].nil?
 				if tranfer_type == "BA"
@@ -150,19 +117,20 @@ private
 				@errors << rte 
 				@errors << transfer_rte
 		  end
-	 rescue
+	 	rescue
 		  p "Error #{id} | #{rte} | #{transfer_rte}"
 		  @errors << id
-			@errors << rte 
-			@errors << transfer_rte
-	  end
+		  @errors << rte 
+		  @errors << transfer_rte
+	  	end
 	end
 
 	def generate_csv
-	 errs = @errors.each_slice(3)
+	 #change the number according to the data exported
+	 @errs = @errors.each_slice(3)
 	 CSV.open('data.csv','wb') do |csv|
 	 	 csv << ["ID", "Route", "Route2"]
-	   errs.each do |error|
+	   @errs.each do |error|
 	     csv << error
 	   end
 	 end
