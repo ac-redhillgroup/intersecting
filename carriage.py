@@ -9,6 +9,7 @@ for i in range(1,cols+1):
 	try:
 		if ws.cell(row=1,column=i).value == "Surveyor Comments:":
 			col = get_column_letter(i)
+			break #quits loop so you don't continue to iterate after you find the column you want
 	except ValueError:
 		print "cannot code"
 #update cells
