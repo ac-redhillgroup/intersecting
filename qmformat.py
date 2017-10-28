@@ -7,6 +7,10 @@ from openpyxl.utils import get_column_letter
 def export():
 	wb = load_workbook(filename = 'westcat.xlsx')
 	ws = wb.worksheets[0] 
+	# new worksheet
+	nwb = Workbook()
+	nws = nwb.worksheets[0]
+	nws.title = "Westcat QM data"
 	rows = ws.max_row
 	cols = ws.max_column
 	arr = []
@@ -19,10 +23,10 @@ def export():
 	    # i = i+1
 	    # if i == 4:
 	    # 	break
-	print arr[5]
+	val = arr[5]
+	print len(val)
+	for idx,val in enumerate(val):
+		if idx == 10:
+			
 
 export()
-#new worksheet
-# nwb = Workbook()
-# nws = nwb.worksheets[0]
-# nws.title = "Westcat QM data"
