@@ -1,3 +1,4 @@
+import os
 from openpyxl import Workbook
 from openpyxl import load_workbook
 from openpyxl.utils import get_column_letter
@@ -9,6 +10,7 @@ def export():
 	ws = wb.worksheets[0] 
 	direction = {'N' : 1,'S' : 2, 'E' : 3, 'W' : 4, 'CW' : 5, 'CL' : 6, 'IN' : 7, 'OB' : 8}
 	ags = {10 : 1, 11 : 2, 12 : 3, 15 : 4, 16 : 5, 17 : 6, 18 : 7, 19 : 8, "30Z" : 9, "C3" : 10, "JR" : 11, "JL" : 12, "JX" : 13, "JPX" : 14, "LYNX" : 15, "-oth-" : 16}
+	tags = {}
 	# new worksheet
 	nwb = Workbook()
 	nws = nwb.worksheets[0]
@@ -80,7 +82,7 @@ def export():
 		elif idx == dic["g1xMapx10[7]"]:
 			nws.cell(row=1,column= 19).value = v
 		elif idx == dic["AccessMode"]:
-			#19 column is for roundtrip
+			#20 column is for roundtrip
 			nws.cell(row=1,column= 21).value = 9 if (v == "-oth-") else v
 		elif idx == dic["AccessMode[other]"]:
 			nws.cell(row=1,column= 22).value = v
@@ -88,6 +90,13 @@ def export():
 			nws.cell(row=1,column= 23).value = v
 		elif idx == dic["AccessMiles"]:
 			nws.cell(row=1,column= 24).value = v
+		elif idx == dic["FirstB4Trans"]:
+			#25 column is for calculating transfers
+			nws.cell(row=1,column= 26).value = v[1:]
+		elif idx == dic["g1xAgencyx1"]:
+			nws.cell(row=1,column= 27).value = v
+
 		nwb.save("qm.xlsx")
+	os.system("start " + "qm.xlsx")
 		
 export()
