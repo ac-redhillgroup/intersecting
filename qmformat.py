@@ -64,7 +64,7 @@ def export():
 				loc = [x.strip() for x in v.split(',')]
 				nws.cell(row=1,column= 12).value = loc[0]
 				nws.cell(row=1,column= 13).value = loc[1]
-		elif idx == dic["g1xMapx10[1]"]:
+		elif idx == dic["g1xMapx10[2]"]:
 			nws.cell(row=1,column= 14).value = v
 		#destination related columns
 		elif idx == dic["g1xDestix0"]:
