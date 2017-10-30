@@ -82,11 +82,11 @@ def export():
 		elif idx == dic["AccessMode"]:
 			#19 column is for roundtrip
 			nws.cell(row=1,column= 21).value = 9 if (v == "-oth-") else v
-		elif idx = dic["AccessMode[other]"]:
+		elif idx == dic["AccessMode[other]"]:
 			nws.cell(row=1,column= 22).value = v
-		elif idx = dic["AccessMinutes"]:
+		elif idx == dic["AccessMinutes"]:
 			nws.cell(row=1,column= 23).value = v
-		elif idx = dic["AccessMiles"]:
+		elif idx == dic["AccessMiles"]:
 			nws.cell(row=1,column= 24).value = v
 		nwb.save("qm.xlsx")
 		
