@@ -117,7 +117,7 @@ def export():
 				ac_route1 = v
 				nws.cell(row=i,column= 29).value = v
 			elif idx == dic["g1xRoutexACx1[other]"] and bagc1 == 'AC' and ac_route1 == None:
-				nws.cell(row=i,column= 29).value = v
+				nws.cell(row=i,column= 30).value = v
 			#Bart Route
 			elif idx == dic["g1xRoutexBARTx1"] and bagc1 == 'BA':
 				global ba_route1
@@ -198,6 +198,23 @@ def export():
 				nws.cell(row=i,column= 29).value = v
 			elif idx == dic["g1xRoutexWCx1[other]"] and bagc1 == 'WC' and wc_route1 == None:
 				nws.cell(row=i,column= 30).value = v
+			#3d
+			elif idx == dic["g1xRoutex3Dx1"] and bagc1 == '3D':
+				global td_route1
+				td_route1 = v
+				nws.cell(row=i,column= 29).value = v
+			elif idx == dic["g1xRoutex3Dx1[other]"] and bagc1 == '3D' and td_route1 == None:
+				nws.cell(row=i,column= 30).value = v
+			elif idx == dic["g1xRoutexotherx1"]:
+				nws.cell(row=i,column= 30).value = v
+			elif idx == dic["g1xMapx11[1]"]:
+				if v:
+					loc = [x.strip() for x in v.split(',')]
+					nws.cell(row=i,column= 31).value = loc[0]
+					nws.cell(row=i,column= 32).value = loc[1]
+			elif idx == dic["g1xMapx11[2]"]:
+				nws.cell(row=i,column= 33).value = v
+			### First before tranfer end
 		nwb.save("qm.xlsx")
 	os.system("start " + "qm.xlsx")
 		
