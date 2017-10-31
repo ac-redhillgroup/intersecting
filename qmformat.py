@@ -445,16 +445,28 @@ def export():
 						elif idx == dic["g1xRoutexotherx3"]:
 							nws.cell(row=i,column= 46).value = v
 						elif idx == dic["g1xMapx3[1]"]:
-							print "ankit cahcasdhsa"
 							if v:
 								loc = [x.strip() for x in v.split(',')]
 								nws.cell(row=i,column= 47).value = loc[0]
 								nws.cell(row=i,column= 48).value = loc[1]
 						elif idx == dic["g1xMapx3[2]"]:
 							nws.cell(row=i,column= 49).value = v
-
 			except: 
-				print ""
+				pass
+			if idx == dic["g1xMapx4[1]"]:
+				if v:
+					loc = [x.strip() for x in v.split(',')]
+					nws.cell(row=i,column= 50).value = loc[0]
+					nws.cell(row=i,column= 51).value = loc[1]
+			elif idx == dic["g1xMapx4[2]"]:
+				nws.cell(row=i,column= 52).value = v
+			elif idx == dic["g1xMapx4[6]"]:
+				if v:
+					loc = [x.strip() for x in v.split(',')]
+					nws.cell(row=i,column= 53).value = loc[0]
+					nws.cell(row=i,column= 54).value = loc[1]
+			elif idx == dic["g1xMapx4[7]"]:
+				nws.cell(row=i,column= 55).value = v
 		nwb.save("qm.xlsx")
 	os.system("start " + "qm.xlsx")
 		
