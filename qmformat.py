@@ -215,6 +215,127 @@ def export():
 			elif idx == dic["g1xMapx11[2]"]:
 				nws.cell(row=i,column= 33).value = v
 			### First before tranfer end
+			### Second transfer
+			try:
+			  if xc == 'A1':
+					if idx == dic["SecondB4Trans"]:
+						print xc
+						#25 column is for calculating transfers
+						global xc2
+						xc2 = v
+						nws.cell(row=i,column= 34).value = v[1:] if v else None
+					elif idx == dic["g1xAgencyx2"] and xc2 == 'A1':
+						nws.cell(row=i,column= 35).value = transit_agencies_dict[v]
+						global bagc2
+						bagc2 = v
+						#print bagc2
+					elif idx == dic["g1xAgencyx2[other]"]:
+						nws.cell(row=i,column= 37).value = v
+					#AC Route
+					elif idx == dic["g1xRoutexACx2"] and bagc2 == 'AC':
+						global ac_route2
+						ac_route2 = v
+						nws.cell(row=i,column= 37).value = v
+					elif idx == dic["g1xRoutexACx2[other]"] and bagc2 == 'AC' and ac_route2 == None:
+						nws.cell(row=i,column= 38).value = v
+					#Bart Route
+					elif idx == dic["g1xRoutexBARTx2"] and bagc2 == 'BA':
+						global ba_route2
+						ba_route2 = v
+						try:
+							if  bart_dict[v]:
+								nws.cell(row=i,column= 37).value = bart_dict[v]
+						except Exception as e:
+							print "Error.."
+						else:
+							pass
+					elif idx == dic["g1xRoutexBARTx2[other]"] and bagc2 == 'BA' and ba_route2 == None:
+						nws.cell(row=i,column= 38).value = v#bart_dict[v]
+					elif idx == dic["g1xRoutexBAx2"] and bagc2 == 'BA':
+						pass
+					#CC Route
+					elif idx == dic["g1xRoutexCCx2"] and bagc2 == 'CC':
+						global cc_route2
+						cc_route2 = v
+						nws.cell(row=i,column= 37).value = v
+					elif idx == dic["g1xRoutexCCx2[other]"] and bagc2 == 'CC' and cc_route2 == None:
+						nws.cell(row=i,column= 38).value = v
+					#Emgo Route
+					elif idx == dic["g1xRoutexEMGOx2"] and bagc2 == 'EM':
+						global em_route2
+						em_route2 = v
+						nws.cell(row=i,column= 37).value = v
+					elif idx == dic["g1xRoutexEMGOx2[other]"] and bagc2 == 'EM' and em_route2 == None:
+						nws.cell(row=i,column= 38).value = v
+					elif idx == dic["g1xRoutexEMx2"] and bagc2 == 'EM':
+						pass
+					#Fast Route
+					elif idx == dic["g1xRoutexFSx2"] and bagc2 == 'FS':
+						global fs_route2
+						fs_route2 = v
+						nws.cell(row=i,column= 37).value = v
+					elif idx == dic["g1xRoutexFSx2[other]"] and bagc2 == 'FS' and fs_route2 == None:
+						nws.cell(row=i,column= 38).value = v
+					#Golden Gate
+					elif idx == dic["g1xRoutexGGx2"] and bagc2 == 'GG':
+						global gg_route2
+						gg_route2 = v
+						nws.cell(row=i,column= 37).value = v
+					elif idx == dic["g1xRoutexGGx2[other]"] and bagc2 == 'GG' and gg_route2 == None:
+						nws.cell(row=i,column= 38).value = v
+					#Samtrans
+					elif idx == dic["g1xRoutexSMx2"] and bagc2 == 'SM':
+						global sm_route2
+						sm_route2 = v
+						nws.cell(row=i,column= 37).value = v
+					elif idx == dic["g1xRoutexSMx2[other]"] and bagc2 == 'SM' and sm_route2 == None:
+						nws.cell(row=i,column= 38).value = v
+					#MUNI
+					elif idx == dic["g1xRoutexSFx2"] and bagc2 == 'SF':
+						global sf_route2
+						sf_route2 = v
+						nws.cell(row=i,column= 37).value = v
+					elif idx == dic["g1xRoutexSFx2[other]"] and bagc2 == 'SF' and sf_route2 == None:
+						nws.cell(row=i,column= 38).value = v
+					#Soltrans
+					elif idx == dic["g1xRoutexSTx2"] and bagc2 == 'ST':
+						global st_route2
+						st_route2 = v
+						nws.cell(row=i,column= 37).value = v
+					elif idx == dic["g1xRoutexSTx2[other]"] and bagc2 == 'ST' and st_route2 == None:
+						nws.cell(row=i,column= 38).value = v
+					#Napa Vine
+					elif idx == dic["g1xRoutexVNx2"] and bagc2 == 'VN':
+						global vn_route2
+						vn_route2 = v
+						nws.cell(row=i,column= 37).value = v
+					elif idx == dic["g1xRoutexVNx2[other]"] and bagc2 == 'VN' and vn_route2 == None:
+						nws.cell(row=i,column= 38).value = v
+					#WC
+					elif idx == dic["g1xRoutexWCx2"] and bagc2 == 'WC':
+						global wc_route2
+						wc_route2 = v
+						nws.cell(row=i,column= 37).value = v
+					elif idx == dic["g1xRoutexWCx2[other]"] and bagc2 == 'WC' and wc_route2 == None:
+						nws.cell(row=i,column= 38).value = v
+					#3d
+					elif idx == dic["g1xRoutex3Dx2"] and bagc2 == '3D':
+						global td_route2
+						td_route2 = v
+						nws.cell(row=i,column= 37).value = v
+					elif idx == dic["g1xRoutex3Dx2[other]"] and bagc2 == '3D' and td_route2 == None:
+						nws.cell(row=i,column= 38).value = v
+					elif idx == dic["g1xRoutexotherx2"]:
+						nws.cell(row=i,column= 38).value = v
+					elif idx == dic["g1xMapx2[1]"]:
+						if v:
+							loc = [x.strip() for x in v.split(',')]
+							nws.cell(row=i,column= 39).value = loc[0]
+							nws.cell(row=i,column= 40).value = loc[1]
+					elif idx == dic["g1xMapx2[2]"]:
+						nws.cell(row=i,column= 41).value = v
+			except: 
+				print "Catch for global name not defined"
 		nwb.save("qm.xlsx")
 	os.system("start " + "qm.xlsx")
 		
