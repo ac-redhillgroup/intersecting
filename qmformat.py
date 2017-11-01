@@ -837,6 +837,8 @@ def export():
 								nws.cell(row=i,column= 79).value = loc[1]
 						elif idx == dic["g1xMapx7[7]"]:
 							nws.cell(row=i,column= 80).value = v
+						elif idx == dic["EgressMode"]:
+							nws.cell(row=i,column= 81).value = v
 			except:
 				" "
 		nwb.save("qm.xlsx")
