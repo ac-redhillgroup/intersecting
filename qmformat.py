@@ -916,11 +916,11 @@ def export():
 			elif idx == dic["ReverseTripTime"]:
 				nws.cell(row=i,column= 104).value = v
 			elif idx == dic["WCxFare"]:
-				nws.cell(row=i,column= 105).value = v
+				nws.cell(row=i,column= 105).value = 9 if v == '-oth-' else v
 			elif idx == dic["WCxFare[other]"]:
 				nws.cell(row=i,column= 106).value = v
 			elif idx == dic["WCxFareType"]:
-				nws.cell(row=i,column= 107).value = v
+				nws.cell(row=i,column= 107).value = 6 if v == '-oth-' else v
 			elif idx == dic["WCxFareType[other]"]:
 				nws.cell(row=i,column= 108).value = v
 			elif idx == dic["customQuestion1"]:
@@ -932,15 +932,15 @@ def export():
 			elif idx == dic["DriversLicense"]:
 				nws.cell(row=i,column= 112).value = 1 if v == 'Y' else 2
 			elif idx == dic["peopleInHH"]:
-				nws.cell(row=i,column= 113).value = v
+				nws.cell(row=i,column= 113).value = 8 if v == '-oth-' else v
 			elif idx == dic["peopleInHH[other]"]:
 				nws.cell(row=i,column= 114).value = v
 			elif idx == dic["EmployedinHH"]:
-				nws.cell(row=i,column= 115).value = v
+				nws.cell(row=i,column= 115).value = 9 if v == '-oth-' else v
 			elif idx == dic["EmployedinHH[other]"]:
 				nws.cell(row=i,column= 116).value = v
 			elif idx == dic["VehiclesInHH"]:
-				nws.cell(row=i,column= 117).value = v
+				nws.cell(row=i,column= 117).value = 7 if v == '-oth-' else v
 			elif idx == dic["VehiclesInHH[other]"]:
 				nws.cell(row=i,column= 118).value = v
 			elif idx == dic["YearOfBirth"]:
