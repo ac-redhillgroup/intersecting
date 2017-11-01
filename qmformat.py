@@ -2,11 +2,11 @@ import os
 from openpyxl import Workbook
 from openpyxl import load_workbook
 from openpyxl.utils import get_column_letter
-
+from datetime import date
 
 #loading worksheet
 def export():
-	wb = load_workbook(filename = 'west.xlsx')
+	wb = load_workbook(filename = 'westcat.xlsx')
 	ws = wb.worksheets[0] 
 	direction = {'N' : 1,'S' : 2, 'E' : 3, 'W' : 4, 'CW' : 5, 'CL' : 6, 'IN' : 7, 'OB' : 8}
 	ags = {10 : 1, 11 : 2, 12 : 3, 15 : 4, 16 : 5, 17 : 6, 18 : 7, 19 : 8, "30Z" : 9, "C3" : 10, "JR" : 11, "JL" : 12, "JX" : 13, "JPX" : 14, "LYNX" : 15, "-oth-" : 16}
@@ -947,6 +947,19 @@ def export():
 							nws.cell(row=i,column= 129).value = v
 						elif idx == dic["Gender"]:
 							nws.cell(row=i,column= 130).value = 1 if v == 'F' else 2
+						elif idx == dic["Comments"]:
+							nws.cell(row=i,column= 131).value = v
+						elif idx == dic["endLocOfDevice"]:
+							if v:
+								loc = [x.strip() for x in v.split(',')]
+								nws.cell(row=i,column= 132).value = loc[0]
+								nws.cell(row=i,column= 133).value = loc[1]
+						elif idx == dic["startdate"]:
+							stdate = datetime.datetime.strptime(v, '%Y-%m-%d %H:%M:%S')
+							if date.weekday(stdate) == 5 or date.weekday(stdate) == 6:
+								nws.cell(row=i,column= 134).value = 1
+							else:
+								nws.cell(row=i,column= 134).value = 2
 			except:
 				" "
 		nwb.save("qm.xlsx")
