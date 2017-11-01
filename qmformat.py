@@ -719,6 +719,124 @@ def export():
 							nws.cell(row=i,column= 71).value = loc[1]
 					elif idx == dic["g1xMapx6[7]"]:
 						nws.cell(row=i,column= 72).value = v
+					if xc_a2 == 'A1':
+						if idx == dic["ThirdAfterTrans"]:
+							print xc_a2
+							global xc_a3
+							xc_a3 = v
+							nws.cell(row=i,column= 73).value = v[1:] if v else None
+						elif idx == dic["g1xAgencyx7"] and xc_a3 == 'A1':
+							nws.cell(row=i,column= 74).value = transit_agencies_dict[v]
+							global aagc3
+							aagc3 = v
+						elif idx == dic["g1xAgencyx7"] and xc_a3 == 'A1':
+							nws.cell(row=i,column= 74).value = transit_agencies_dict[v]
+							aagc3 = v
+						elif idx == dic["g1xAgencyx7[other]"]:
+							nws.cell(row=i,column= 75).value = v
+						#AC Route
+						elif idx == dic["g1xRoutexACx7"] and aagc3 == 'AC':
+							global ac_route3_a
+							ac_route3_a = v
+							nws.cell(row=i,column= 76).value = v
+						elif idx == dic["g1xRoutexACx7[other]"] and aagc3 == 'AC' and ac_route3_a == None:
+							nws.cell(row=i,column= 77).value = v
+						#Bart Route
+						elif idx == dic["g1xRoutexBARTx7"] and aagc3 == 'BA':
+							global ba_route3_a
+							ba_route3_a = v
+							try:
+								if  bart_dict[v]:
+									nws.cell(row=i,column= 76).value = bart_dict[v]
+							except Exception as e:
+								print "Error.."
+							else:
+								pass
+						elif idx == dic["g1xRoutexBARTx7[other]"] and aagc3 == 'BA' and ba_route3_a == None:
+							nws.cell(row=i,column= 77).value = v#bart_dict[v]
+						elif idx == dic["g1xRoutexBAx7"] and aagc3 == 'BA':
+							pass
+						#CC Route
+						elif idx == dic["g1xRoutexCCx7"] and aagc3 == 'CC':
+							global cc_route3_a
+							cc_route3_a = v
+							nws.cell(row=i,column= 76).value = v
+						elif idx == dic["g1xRoutexCCx7[other]"] and aagc3 == 'CC' and cc_route3_a == None:
+							nws.cell(row=i,column= 77).value = v
+						#Emgo Route
+						elif idx == dic["g1xRoutexEMGOx7"] and aagc3 == 'EM':
+							global em_route3_a
+							em_route3_a = v
+							nws.cell(row=i,column= 76).value = v
+						elif idx == dic["g1xRoutexEMGOx7[other]"] and aagc3 == 'EM' and em_route3_a == None:
+							nws.cell(row=i,column= 77).value = v
+						elif idx == dic["g1xRoutexEMx7"] and aagc3 == 'EM':
+							pass
+						#Fast Route
+						elif idx == dic["g1xRoutexFSx7"] and aagc3 == 'FS':
+							global fs_route3_a
+							fs_route3_a = v
+							nws.cell(row=i,column= 76).value = v
+						elif idx == dic["g1xRoutexFSx7[other]"] and aagc3 == 'FS' and fs_route3_a == None:
+							nws.cell(row=i,column= 77).value = v
+						#Golden Gate
+						elif idx == dic["g1xRoutexGGx7"] and aagc3 == 'GG':
+							global gg_route3_a
+							gg_route3_a = v
+							nws.cell(row=i,column= 76).value = v
+						elif idx == dic["g1xRoutexGGx7[other]"] and aagc3 == 'GG' and gg_route3_a == None:
+							nws.cell(row=i,column= 77).value = v
+						#Samtrans
+						elif idx == dic["g1xRoutexSMx7"] and aagc3 == 'SM':
+							global sm_route3_a
+							sm_route3_a = v
+							nws.cell(row=i,column= 76).value = v
+						elif idx == dic["g1xRoutexSMx7[other]"] and aagc3 == 'SM' and sm_route3_a == None:
+							nws.cell(row=i,column= 77).value = v
+						#MUNI
+						elif idx == dic["g1xRoutexSFx7"] and aagc3 == 'SF':
+							global sf_route3_a
+							sf_route3_a = v
+							nws.cell(row=i,column= 76).value = v
+						elif idx == dic["g1xRoutexSFx7[other]"] and aagc3 == 'SF' and sf_route3_a == None:
+							nws.cell(row=i,column= 77).value = v
+						#Soltrans
+						elif idx == dic["g1xRoutexSTx7"] and aagc3 == 'ST':
+							global st_route3_a
+							st_route3_a = v
+							nws.cell(row=i,column= 76).value = v
+						elif idx == dic["g1xRoutexSTx7[other]"] and aagc3 == 'ST' and st_route3_a == None:
+							nws.cell(row=i,column= 77).value = v
+						#Napa Vine
+						elif idx == dic["g1xRoutexVNx7"] and aagc3 == 'VN':
+							global vn_route3_a
+							vn_route3_a = v
+							nws.cell(row=i,column= 76).value = v
+						elif idx == dic["g1xRoutexVNx7[other]"] and aagc3 == 'VN' and vn_route3_a == None:
+							nws.cell(row=i,column= 77).value = v
+						#WC
+						elif idx == dic["g1xRoutexWCx7"] and aagc3 == 'WC':
+							global wc_route3_a
+							wc_route3_a = v
+							nws.cell(row=i,column= 76).value = v
+						elif idx == dic["g1xRoutexWCx7[other]"] and aagc3 == 'WC' and wc_route3_a == None:
+							nws.cell(row=i,column= 77).value = v
+						#3d
+						elif idx == dic["g1xRoutex3Dx7"] and aagc3 == '3D':
+							global td_route3_a
+							td_route3_a = v
+							nws.cell(row=i,column= 76).value = v
+						elif idx == dic["g1xRoutex3Dx7[other]"] and aagc3 == '3D' and td_route3_a == None:
+							nws.cell(row=i,column= 77).value = v
+						elif idx == dic["g1xRoutexotherx7"]:
+							nws.cell(row=i,column= 77).value = v
+						elif idx == dic["g1xMapx7[6]"]:
+							if v:
+								loc = [x.strip() for x in v.split(',')]
+								nws.cell(row=i,column= 78).value = loc[0]
+								nws.cell(row=i,column= 79).value = loc[1]
+						elif idx == dic["g1xMapx7[7]"]:
+							nws.cell(row=i,column= 80).value = v
 			except:
 				""
 		nwb.save("qm.xlsx")
