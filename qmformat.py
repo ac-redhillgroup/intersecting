@@ -838,7 +838,115 @@ def export():
 						elif idx == dic["g1xMapx7[7]"]:
 							nws.cell(row=i,column= 80).value = v
 						elif idx == dic["EgressMode"]:
-							nws.cell(row=i,column= 81).value = v
+							nws.cell(row=i,column= 81).value = 9 if (v == "-oth-") else v
+						elif idx == dic["EgressMode[other]"]:
+							nws.cell(row=i,column= 82).value = v
+						elif idx == dic["EgressMinutes"]:
+							nws.cell(row=i,column= 83).value = v
+						elif idx == dic["EgressMiles"]:
+							nws.cell(row=i,column= 84).value = v
+						elif idx == dic["Employed"]:
+							nws.cell(row=i,column= 85).value = 1 if v == 'Y' else 2
+						elif idx == dic["WorkBefore"]:
+							print v
+							nws.cell(row=i,column= 86).value = v[1:]	
+						elif idx == dic["WorkAfter"]:
+							nws.cell(row=i,column= 87).value = v[1:]
+						elif idx == dic["g2xMapx8[6]"]:
+							if v:
+								print v
+								loc = [x.strip() for x in v.split(',')]
+								nws.cell(row=i,column= 88).value = loc[0]
+								nws.cell(row=i,column= 89).value = loc[1]
+						elif idx == dic["g2xMapx8[7]"]:
+							nws.cell(row=i,column= 90).value = v
+						elif idx == dic["StudentStatus"]:
+							nws.cell(row=i,column= 91).value = 1 if v == 'Y' else 2
+						elif idx == dic["SchoolBefore"]:
+							print v
+							nws.cell(row=i,column= 92).value = v[1:]	
+						elif idx == dic["SchoolAfter"]:
+							print v
+							nws.cell(row=i,column= 93).value = v[1:]
+						elif idx == dic["onlineSchool"]:
+							print v
+							nws.cell(row=i,column= 94).value = v
+						elif idx == dic["g2xMapx9[6]"]:
+							if v:
+								print v
+								loc = [x.strip() for x in v.split(',')]
+								nws.cell(row=i,column= 95).value = loc[0]
+								nws.cell(row=i,column= 96).value = loc[1]
+						elif idx == dic["g2xMapx9[7]"]:
+							nws.cell(row=i,column= 97).value = v
+						elif idx == dic["g2xMapx10[6]"]:
+							if v:
+								print v
+								loc = [x.strip() for x in v.split(',')]
+								nws.cell(row=i,column= 98).value = loc[0]
+								nws.cell(row=i,column= 99).value = loc[1]
+						elif idx == dic["g2xMapx10[7]"]:
+							nws.cell(row=i,column= 100).value = v
+						elif idx == dic["TimeLeftHome"]:
+							nws.cell(row=i,column= 101).value = v
+						elif idx == dic["TimeReturnHome"]:
+							nws.cell(row=i,column= 102).value = v
+						elif idx == dic["ReverseTrip"]:
+							nws.cell(row=i,column= 103).value = v
+						elif idx == dic["ReverseTripTime"]:
+							nws.cell(row=i,column= 104).value = v
+						elif idx == dic["WCxFare"]:
+							nws.cell(row=i,column= 105).value = v
+						elif idx == dic["WCxFare[other]"]:
+							nws.cell(row=i,column= 106).value = v
+						elif idx == dic["WCxFareType"]:
+							nws.cell(row=i,column= 107).value = v
+						elif idx == dic["WCxFareType[other]"]:
+							nws.cell(row=i,column= 108).value = v
+						elif idx == dic["customQuestion1"]:
+							nws.cell(row=i,column= 109).value = v
+						elif idx == dic["customQuestion2"]:
+							nws.cell(row=i,column= 110).value = v
+						elif idx == dic["customQuestion3"]:
+							nws.cell(row=i,column= 111).value = v
+						elif idx == dic["DriversLicense"]:
+							nws.cell(row=i,column= 112).value = 1 if v == 'Y' else 2
+						elif idx == dic["peopleInHH"]:
+							nws.cell(row=i,column= 113).value = v
+						elif idx == dic["peopleInHH[other]"]:
+							nws.cell(row=i,column= 114).value = v
+						elif idx == dic["EmployedinHH"]:
+							nws.cell(row=i,column= 115).value = v
+						elif idx == dic["EmployedinHH[other]"]:
+							nws.cell(row=i,column= 116).value = v
+						elif idx == dic["VehiclesInHH"]:
+							nws.cell(row=i,column= 117).value = v
+						elif idx == dic["VehiclesInHH[other]"]:
+							nws.cell(row=i,column= 118).value = v
+						elif idx == dic["YearOfBirth"]:
+							nws.cell(row=i,column= 119).value = v
+						elif idx == dic["HispanicLatino]"]:
+							nws.cell(row=i,column= 120).value = 1 if v == 'Y' else 2
+						elif idx == dic["RaceEthnicity"]:
+							nws.cell(row=i,column= 121).value = v
+						elif idx == dic["RaceEthnicity[other]"]:
+							nws.cell(row=i,column= 122).value = v
+						elif idx == dic["LanguageOtherEnglish"]:
+							nws.cell(row=i,column= 123).value =  1 if v == 'Y' else 2
+						elif idx == dic["OtherLanguage"]:
+							nws.cell(row=i,column= 124).value = v
+						elif idx == dic["OtherLanguage[other]"]:
+							nws.cell(row=i,column= 125).value = v
+						elif idx == dic["EnglishFluency"]:
+							nws.cell(row=i,column= 126).value = v
+						elif idx == dic["HouseholdIncome"]:
+							nws.cell(row=i,column= 127).value = v
+						elif idx == dic["CallbackInformation[1]"]:
+							nws.cell(row=i,column= 128).value = v
+						elif idx == dic["CallbackInformation[2]"]:
+							nws.cell(row=i,column= 129).value = v
+						elif idx == dic["Gender"]:
+							nws.cell(row=i,column= 130).value = 1 if v == 'F' else 2
 			except:
 				" "
 		nwb.save("qm.xlsx")
