@@ -838,7 +838,7 @@ def export():
 						elif idx == dic["g1xMapx7[7]"]:
 							nws.cell(row=i,column= 80).value = v
 			except:
-				""
+				" "
 		nwb.save("qm.xlsx")
 	os.system("start " + "qm.xlsx")
 export()
