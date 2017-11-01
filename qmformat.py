@@ -894,7 +894,7 @@ def export():
 			elif idx == dic["TimeReturnHome"]:
 				nws.cell(row=i,column= 102).value = v
 			elif idx == dic["ReverseTrip"]:
-				nws.cell(row=i,column= 103).value = v
+				nws.cell(row=i,column= 103).value = v[1:] if v else None
 			elif idx == dic["ReverseTripTime"]:
 				nws.cell(row=i,column= 104).value = v
 			elif idx == dic["WCxFare"]:
@@ -959,9 +959,9 @@ def export():
 			elif idx == dic["startdate"]:
 				stdate = datetime.datetime.strptime(v, '%Y-%m-%d %H:%M:%S')
 				if date.weekday(stdate) == 5 or date.weekday(stdate) == 6:
-					nws.cell(row=i,column= 134).value = 1
-				else:
 					nws.cell(row=i,column= 134).value = 2
+				else:
+					nws.cell(row=i,column= 134).value = 1
 			
 		nwb.save("qm.xlsx")
 	os.system("start " + "qm.xlsx")
