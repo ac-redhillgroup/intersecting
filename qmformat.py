@@ -147,7 +147,10 @@ def export():
 			elif idx == dic["g1xRoutexEMGOx1"] and bagc1 == 'EM':
 				global em_route1
 				em_route1 = v
-				nws.cell(row=i,column= 29).value = v
+				try:
+					nws.cell(row=i,column= 29).value = emgo_dict[v]
+				except Exception as e:
+					print "Emgo Key not found"
 			elif idx == dic["g1xRoutexEMGOx1[other]"] and bagc1 == 'EM' and em_route1 == None:
 				nws.cell(row=i,column= 30).value = v
 			elif idx == dic["g1xRoutexEMx1"] and bagc1 == 'EM':
@@ -271,7 +274,10 @@ def export():
 					elif idx == dic["g1xRoutexEMGOx2"] and bagc2 == 'EM':
 						global em_route2
 						em_route2 = v
-						nws.cell(row=i,column= 37).value = v
+						try:
+							nws.cell(row=i,column= 37).value = emgo_dict[v]
+						except Exception as e:
+							print "Emgo Key not found"
 					elif idx == dic["g1xRoutexEMGOx2[other]"] and bagc2 == 'EM' and em_route2 == None:
 						nws.cell(row=i,column= 38).value = v
 					elif idx == dic["g1xRoutexEMx2"] and bagc2 == 'EM':
@@ -392,7 +398,10 @@ def export():
 						elif idx == dic["g1xRoutexEMGOx3"] and bagc3 == 'EM':
 							global em_route3
 							em_route3 = v
-							nws.cell(row=i,column= 45).value = v
+							try:
+								nws.cell(row=i,column= 45).value = emgo_dict[v]
+							except Exception as e:
+								print "Emgo Key not found"
 						elif idx == dic["g1xRoutexEMGOx3[other]"] and bagc3 == 'EM' and em_route3 == None:
 							nws.cell(row=i,column= 46).value = v
 						elif idx == dic["g1xRoutexEMx3"] and bagc3 == 'EM':
@@ -529,7 +538,10 @@ def export():
 			elif idx == dic["g1xRoutexEMGOx5"] and aagc1 == 'EM':
 				global em_route1_a
 				em_route1_a = v
-				nws.cell(row=i,column= 60).value = v
+				try:
+					nws.cell(row=i,column= 60).value = emgo_dict[v]
+				except Exception as e:
+					print "Emgo Key not found"
 			elif idx == dic["g1xRoutexEMGOx5[other]"] and aagc1 == 'EM' and em_route1 == None:
 				nws.cell(row=i,column= 61).value = v
 			elif idx == dic["g1xRoutexEMx5"] and aagc1 == 'EM':
@@ -649,7 +661,10 @@ def export():
 					elif idx == dic["g1xRoutexEMGOx6"] and aagc2 == 'EM':
 						global em_route2_a
 						em_route2_a = v
-						nws.cell(row=i,column= 68).value = v
+						try:
+							nws.cell(row=i,column= 68).value = emgo_dict[v]
+						except Exception as e:
+							print "Emgo Key not found"
 					elif idx == dic["g1xRoutexEMGOx6[other]"] and aagc2 == 'EM' and em_route2_a == None:
 						nws.cell(row=i,column= 69).value = v
 					elif idx == dic["g1xRoutexEMx6"] and aagc2 == 'EM':
@@ -767,7 +782,10 @@ def export():
 						elif idx == dic["g1xRoutexEMGOx7"] and aagc3 == 'EM':
 							global em_route3_a
 							em_route3_a = v
-							nws.cell(row=i,column= 76).value = v
+							try:
+								nws.cell(row=i,column= 76).value = emgo_dict[v]
+							except Exception as e:
+								print "Emgo Key not found"
 						elif idx == dic["g1xRoutexEMGOx7[other]"] and aagc3 == 'EM' and em_route3_a == None:
 							nws.cell(row=i,column= 77).value = v
 						elif idx == dic["g1xRoutexEMx7"] and aagc3 == 'EM':
