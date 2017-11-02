@@ -6,9 +6,9 @@ from datetime import date
 
 #loading worksheet
 def export():
-	wb = load_workbook(filename = 'westcat.xlsx')
+	wb = load_workbook(filename = 'westnew.xlsx')
 	ws = wb.worksheets[0] 
-	direction = {'N' : 1,'S' : 2, 'E' : 3, 'W' : 4, 'CW' : 5, 'CL' : 6, 'IN' : 7, 'OB' : 8}
+	direction = {'N' : 1,'S' : 2, 'E' : 3, 'W' : 4, 'CW' : 5, 'CC' : 6, 'IB' : 7, 'OB' : 8}
 	ags = {10 : 1, 11 : 2, 12 : 3, 15 : 4, 16 : 5, 17 : 6, 18 : 7, 19 : 8, "30Z" : 9, "C3" : 10, "JR" : 11, "JL" : 12, "JX" : 13, "JPX" : 14, "LYNX" : 15, "-oth-" : 16}
 	transit_agencies = ["3D","AC","EM","BA","CC","FS","GG","SF","SM","ST","VN","WC","-oth-"]
 	transit_agencies_dict = {}
@@ -49,6 +49,7 @@ def export():
 			elif idx == dic["InterviewersInitials"]:
 				nws.cell(row=i,column= 2).value = v
 			elif idx == dic["g1xRoutexSWCx0"]:
+				print i
 	 			nws.cell(row=i,column= 3).value = ags[v] 
 			elif idx == dic["g1xRoutexSWCx0[other]"]:
 				nws.cell(row=i,column= 4).value = v
@@ -911,6 +912,7 @@ def export():
 				nws.cell(row=i,column= 101).value = v
 			elif idx == dic["TimeReturnHome"]:
 				nws.cell(row=i,column= 102).value = v
+			#origin check
 			elif idx == dic["g1xOriginx12"]:
 				if v:
 					print "Inside origin check.."
@@ -929,6 +931,25 @@ def export():
 				if v:
 					print "inside origin check for address"
 					nws.cell(row=i,column= 14).value = v
+			#destination check
+			elif idx == dic["g1xDestix13"]:
+				if v:
+					print "destination check"
+					nws.cell(row=i,column= 15).value = 14 if (v == "-oth-") else v
+			elif idx == dic["g1xDestix13[other]"]:
+				if v:
+					print "destination check other"
+					nws.cell(row=i,column= 16).value = v
+			##map##
+			elif idx == dic["g1xMapx13[6]"]:
+				#check if location is there or not
+				if v:
+					loc = [x.strip() for x in v.split(',')]
+					nws.cell(row=i,column= 17).value = loc[0]
+					nws.cell(row=i,column= 18).value = loc[1]
+			elif idx == dic["g1xMapx13[7]"]:
+				nws.cell(row=i,column= 19).value = v
+			#map##
 			elif idx == dic["ReverseTrip"]:
 				nws.cell(row=i,column= 103).value = v[1:] if v else None
 			elif idx == dic["ReverseTripTime"]:
@@ -993,6 +1014,7 @@ def export():
 					nws.cell(row=i,column= 132).value = loc[0]
 					nws.cell(row=i,column= 133).value = loc[1]
 			elif idx == dic["startdate"]:
+				print v
 				stdate = datetime.datetime.strptime(v, '%Y-%m-%d %H:%M:%S')
 				if date.weekday(stdate) == 5 or date.weekday(stdate) == 6:
 					nws.cell(row=i,column= 134).value = 2
