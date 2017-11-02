@@ -911,6 +911,24 @@ def export():
 				nws.cell(row=i,column= 101).value = v
 			elif idx == dic["TimeReturnHome"]:
 				nws.cell(row=i,column= 102).value = v
+			elif idx == dic["g1xOriginx12"]:
+				if v:
+					print "Inside origin check.."
+					nws.cell(row=i,column= 10).value = 14 if (v == "-oth-") else v
+			elif idx == dic["g1xOriginx12[other]"]:
+				if v:
+					print "Inside origin check other.."
+					nws.cell(row=i,column= 11).value = v
+			elif idx == dic["g1xMapx12[1]"]:
+				if v:
+					print "Inside origin check.."
+					loc = [x.strip() for x in v.split(',')]
+					nws.cell(row=i,column= 12).value = loc[0]
+					nws.cell(row=i,column= 13).value = loc[1]
+			elif idx == dic["g1xMapx12[2]"]:
+				if v:
+					print "inside origin check for address"
+					nws.cell(row=i,column= 14).value = v
 			elif idx == dic["ReverseTrip"]:
 				nws.cell(row=i,column= 103).value = v[1:] if v else None
 			elif idx == dic["ReverseTripTime"]:
