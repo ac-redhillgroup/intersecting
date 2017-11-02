@@ -348,7 +348,7 @@ def export():
 						try:
 							nws.cell(row=i,column= 37).value = emgo_dict[v]
 						except Exception as e:
-							print "Emgo Key not found " + str(i) + " " + v
+							print "Emgo Key not found "
 					elif idx == dic["g1xRoutexEMGOx2[other]"] and bagc2 == 'EM' and em_route2 == "-oth-":
 						nws.cell(row=i,column= 38).value = v
 					elif idx == dic["g1xRoutexEMx2"] and bagc2 == 'EM':
@@ -465,7 +465,7 @@ def export():
 							try:
 								nws.cell(row=i,column= 45).value = emgo_dict[v]
 							except Exception as e:
-								print "Emgo Key not found"
+								print "Emgo Key not found: " 
 						elif idx == dic["g1xRoutexEMGOx3[other]"] and bagc3 == 'EM' and em_route3 == "-oth-":
 							nws.cell(row=i,column= 46).value = v
 						elif idx == dic["g1xRoutexEMx3"] and bagc3 == 'EM':
@@ -600,7 +600,7 @@ def export():
 				try:
 					nws.cell(row=i,column= 60).value = emgo_dict[v]
 				except Exception as e:
-					print "Emgo Key not found"
+					print "Emgo Key not found" 
 			elif idx == dic["g1xRoutexEMGOx5[other]"] and aagc1 == 'EM' and em_route1_a == "-oth-":
 				nws.cell(row=i,column= 61).value = v
 			elif idx == dic["g1xRoutexEMx5"] and aagc1 == 'EM':
@@ -716,7 +716,7 @@ def export():
 						try:
 							nws.cell(row=i,column= 68).value = emgo_dict[v]
 						except Exception as e:
-							print "Emgo Key not found"
+							print(type(e), e)
 					elif idx == dic["g1xRoutexEMGOx6[other]"] and aagc2 == 'EM' and em_route2_a == "-oth-":
 						nws.cell(row=i,column= 69).value = v
 					elif idx == dic["g1xRoutexEMx6"] and aagc2 == 'EM':
@@ -935,7 +935,7 @@ def export():
 			elif idx == dic["g2xMapx8[7]"]:
 				nws.cell(row=i,column= 90).value = v
 			elif idx == dic["StudentStatus"]:
-				nws.cell(row=i,column= 91).value = 1 if v == 'Y' else 2
+				nws.cell(row=i,column= 91).value = 1 if v == 'Y' else 2 if v == 'N' else None
 			elif idx == dic["SchoolBefore"]:
 				# print v
 				nws.cell(row=i,column= 92).value = v[1:] if v else None
@@ -1022,7 +1022,7 @@ def export():
 			elif idx == dic["customQuestion3"]:
 				nws.cell(row=i,column= 111).value = v
 			elif idx == dic["DriversLicense"]:
-				nws.cell(row=i,column= 112).value = 1 if v == 'Y' else 2
+				nws.cell(row=i,column= 112).value = 1 if v == 'Y' else 2 if v == 'N' else None
 			elif idx == dic["peopleInHH"]:
 				nws.cell(row=i,column= 113).value = 8 if v == '-oth-' else v
 			elif idx == dic["peopleInHH[other]"]:
@@ -1038,13 +1038,13 @@ def export():
 			elif idx == dic["YearOfBirth"]:
 				nws.cell(row=i,column= 119).value = v
 			elif idx == dic["HispanicLatino"]:
-				nws.cell(row=i,column= 120).value = 1 if v == 'Y' else 2
+				nws.cell(row=i,column= 120).value = 1 if v == 'Y' else 2 if v == 'N' else None
 			elif idx == dic["RaceEthnicity"]:
 				nws.cell(row=i,column= 121).value = 8 if v == "-oth-" else v
 			elif idx == dic["RaceEthnicity[other]"]:
 				nws.cell(row=i,column= 122).value = v
 			elif idx == dic["LanguageOtherEnglish"]:
-				nws.cell(row=i,column= 123).value =  1 if v == 'Y' else 2
+				nws.cell(row=i,column= 123).value =  1 if v == 'Y' else 2 if v == 'N' else None
 			elif idx == dic["OtherLanguage"]:
 				nws.cell(row=i,column= 124).value = 12 if v == "-oth-" else v
 			elif idx == dic["OtherLanguage[other]"]:
