@@ -6,7 +6,7 @@ from datetime import date
 
 #loading worksheet
 def export():
-	wb = load_workbook(filename = 'westnew.xlsx')
+	wb = load_workbook(filename = 'westcat.xlsx')
 	ws = wb.worksheets[0] 
 	direction = {'N' : 1,'S' : 2, 'E' : 3, 'W' : 4, 'CW' : 5, 'CC' : 6, 'IB' : 7, 'OB' : 8}
 	ags = {10 : 1, 11 : 2, 12 : 3, 15 : 4, 16 : 5, 17 : 6, 18 : 7, 19 : 8, "30Z" : 9, "C3" : 10, "JR" : 11, "JL" : 12, "JX" : 13, "JPX" : 14, "LYNX" : 15, "-oth-" : 16}
@@ -102,10 +102,12 @@ def export():
 		transit_agencies_dict[i] = idx+1
 	# print transit_agencies_dict
 	bart_dict = {}
-	bart_wb = load_workbook(filename = 'BART_CodeDict.xlsx')
+	bart_dict_address = {}
+	bart_wb = load_workbook(filename = 'BART_LatLong.xlsx')
 	bart_ws = bart_wb.worksheets[0]
 	for row in bart_ws.rows:
 		bart_dict[row[0].value] = row[1].value
+		bart_dict_address[row[0].value] = str(row[2].value) + "$" + str(row[3].value) + "$" + str(row[4].value)
 	emgo_dict = {"Holli" : "Hollis ","NHoll" : "North-Hollis","NShel" : "North-Shellmound","ShPo" : "Shellmound-Powell","SSPM" : "SoShell-Powell - The Marina","SSPT" : "SoShell-Powell - The Towers","SHoll" : "South-Hollis","WExp" : "Watergate-Express","-oth-" : "Other"}
 	# new worksheet
 	nwb = Workbook()
@@ -125,12 +127,14 @@ def export():
 	arr = arr[1:]
 	for header in range(0,len(headers)):
 		dic[headers[header]] = header
+	# print dic
 
 	for i in range(1,len(arr)):
 		val = arr[i]
 		for idx,v in enumerate(val):
 			if idx == dic["id"]:
 				nws.cell(row=i,column= 1).value = v
+				nws.cell(row=i,column= 134).value = v
 			elif idx == dic["InterviewersInitials"]:
 				nws.cell(row=i,column= 2).value = v
 			elif idx == dic["g1xRoutexSWCx0"]:
@@ -290,8 +294,19 @@ def export():
 					loc = [x.strip() for x in v.split(',')]
 					nws.cell(row=i,column= 31).value = loc[0]
 					nws.cell(row=i,column= 32).value = loc[1]
+				else:
+					if bagc1 == "BA":
+						loc = bart_dict_address[ba_route1].split('$')
+						nws.cell(row=i,column= 31).value = loc[0]
+						nws.cell(row=i,column= 32).value = loc[1]
 			elif idx == dic["g1xMapx11[2]"]:
-				nws.cell(row=i,column= 33).value = v
+				if v:
+					nws.cell(row=i,column= 33).value = v
+				else:
+					if bagc1 == "BA":
+						loc = bart_dict_address[ba_route1].split('$')
+						nws.cell(row=i,column= 33).value = loc[2]
+					print "Address"
 			### First before tranfer end
 			### Second transfer
 			try:
@@ -1001,11 +1016,13 @@ def export():
 					nws.cell(row=i,column= 17).value = loc[0]
 					nws.cell(row=i,column= 18).value = loc[1]
 			elif idx == dic["g1xMapx13[7]"]:
-				nws.cell(row=i,column= 19).value = v
+				if v:
+					nws.cell(row=i,column= 19).value = v
 			#map##
 			elif idx == dic["ReverseTrip"]:
 				nws.cell(row=i,column= 103).value = v[1:] if v else None
 			elif idx == dic["ReverseTripTime"]:
+				print v
 				nws.cell(row=i,column= 104).value = v
 			elif idx == dic["WCxFare"]:
 				nws.cell(row=i,column= 105).value = 9 if v == '-oth-' else v
@@ -1070,10 +1087,10 @@ def export():
 				# print v
 				stdate = datetime.datetime.strptime(v, '%Y-%m-%d %H:%M:%S')
 				if date.weekday(stdate) == 5 or date.weekday(stdate) == 6:
-					nws.cell(row=i,column= 134).value = 2
+					nws.cell(row=i,column= 135).value = 2
 				else:
-					nws.cell(row=i,column= 134).value = 1
+					nws.cell(row=i,column= 135).value = 1
 			
-		nwb.save("qm.xlsx")
-	os.system("start " + "qm.xlsx")
+		nwb.save("qmupdate.xlsx")
+	os.system("start " + "qmupdate.xlsx")
 export()
