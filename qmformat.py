@@ -832,8 +832,19 @@ def export():
 							loc = [x.strip() for x in v.split(',')]
 							nws.cell(row=i,column= 70).value = loc[0]
 							nws.cell(row=i,column= 71).value = loc[1]
+						else:
+							if aagc2 == "BA":
+								loc = bart_dict_address[ba_route2_a].split('$')
+								nws.cell(row=i,column= 70).value = loc[0]
+								nws.cell(row=i,column= 71).value = loc[1]	
 					elif idx == dic["g1xMapx6[7]"]:
-						nws.cell(row=i,column= 72).value = v
+						if v:
+							nws.cell(row=i,column= 72).value = v
+						else:
+							if aagc2 == "BA":
+								loc = bart_dict_address[ba_route2_a].split('$')
+								nws.cell(row=i,column= 72).value = loc[2]
+								print "Address2 after"
 					if xc_a2 == 'A1':
 						if idx == dic["ThirdAfterTrans"]:
 							# print xc_a2
@@ -954,8 +965,19 @@ def export():
 								loc = [x.strip() for x in v.split(',')]
 								nws.cell(row=i,column= 78).value = loc[0]
 								nws.cell(row=i,column= 79).value = loc[1]
+							else:
+								if aagc3 == "BA":
+									loc = bart_dict_address[ba_route3_a].split('$')
+									nws.cell(row=i,column= 78).value = loc[0]
+									nws.cell(row=i,column= 79).value = loc[1]	
 						elif idx == dic["g1xMapx7[7]"]:
-							nws.cell(row=i,column= 80).value = v
+							if v:
+								nws.cell(row=i,column= 80).value = v
+							else:
+								if aagc3 == "BA":
+									loc = bart_dict_address[ba_route3_a].split('$')
+									nws.cell(row=i,column= 80).value = loc[2]
+									print "Address3 after"
 			except:
 				" "
 			if idx == dic["EgressMode"]:
