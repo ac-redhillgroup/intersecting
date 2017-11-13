@@ -424,8 +424,19 @@ def export():
 							loc = [x.strip() for x in v.split(',')]
 							nws.cell(row=i,column= 39).value = loc[0]
 							nws.cell(row=i,column= 40).value = loc[1]
+						else:
+							if bagc2 == "BA":
+								loc = bart_dict_address[ba_route2].split('$')
+								nws.cell(row=i,column= 39).value = loc[0]
+								nws.cell(row=i,column= 40).value = loc[1]
 					elif idx == dic["g1xMapx2[2]"]:
-						nws.cell(row=i,column= 41).value = v
+						if v:
+							nws.cell(row=i,column= 41).value = v
+						else:
+							if bagc2 == "BA":
+								loc = bart_dict_address[ba_route2].split('$')
+								nws.cell(row=i,column= 41).value = loc[2]
+							print "Address"
 					if xc2 == 'A1':
 						if idx == dic["ThirdB4Trans"]:
 							# print xc2
