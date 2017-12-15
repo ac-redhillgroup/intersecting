@@ -6,10 +6,10 @@ from datetime import date
 
 #loading worksheet
 def export():
-	wb = load_workbook(filename = 'westcat.xlsx')
+	wb = load_workbook(filename = 'LS_WC_backup_completed_coded.xlsx')
 	ws = wb.worksheets[0] 
 	direction = {'N' : 1,'S' : 2, 'E' : 3, 'W' : 4, 'CW' : 5, 'CC' : 6, 'IB' : 7, 'OB' : 8}
-	ags = {10 : 1, 11 : 2, 12 : 3, 15 : 4, 16 : 5, 17 : 6, 18 : 7, 19 : 8, "30Z" : 9, "C3" : 10, "JR" : 11, "JL" : 12, "JX" : 13, "JPX" : 14, "LYNX" : 15, "-oth-" : 16}
+	ags = {10 : 1, 11 : 2, 12 : 3, 15 : 4, 16 : 5, 17 : 6, 18 : 7, 19 : 8, "30Z" : 9, "C3" : 10, "JR" : 11, "JL" : 12, "JX" : 13, "JPX" : 14, "LYNX" : 15, "-oth-" : 16,"10" : 1, "11" : 2, "12" : 3, "15" : 4, "16" : 5, "17" : 6, "18" : 7, "19" : 8}
 	transit_agencies = ["3D","AC","EM","BA","CC","FS","GG","SF","SM","ST","VN","WC","-oth-"]
 	transit_agencies_dict = {}
 	#global declaration start
@@ -138,7 +138,7 @@ def export():
 			elif idx == dic["InterviewersInitials"]:
 				nws.cell(row=i,column= 2).value = v
 			elif idx == dic["g1xRoutexSWCx0"]:
-	 			nws.cell(row=i,column= 3).value = ags[v] 
+				nws.cell(row=i,column= 3).value = ags[v] 
 			elif idx == dic["g1xRoutexSWCx0[other]"]:
 				nws.cell(row=i,column= 4).value = v
 			elif idx == dic["xTimeofDayx0"]:
@@ -989,7 +989,7 @@ def export():
 			elif idx == dic["EgressMiles"]:
 				nws.cell(row=i,column= 84).value = v
 			elif idx == dic["Employed"]:
-				nws.cell(row=i,column= 85).value = 1 if v == 'Y' else 2
+				nws.cell(row=i,column= 85).value = 1 if v == 'Y' else 2 if v == 'N' else None
 			elif idx == dic["WorkBefore"]:
 				# print v
 				nws.cell(row=i,column= 86).value = v[1:] if v else None
@@ -1144,7 +1144,8 @@ def export():
 					nws.cell(row=i,column= 135).value = 2
 				else:
 					nws.cell(row=i,column= 135).value = 1
-			
-		nwb.save("qmupdate.xlsx")
-	os.system("start " + "qmupdate.xlsx")
+			elif idx == dic["startlanguage"]:
+				nws.cell(row=i,column= 136).value = 1 if v == "en" else 2
+		nwb.save("qmupdate-new.xlsx")
+	os.system("start " + "qmupdate-new.xlsx")
 export()
