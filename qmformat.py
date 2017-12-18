@@ -128,8 +128,11 @@ def export():
 	for header in range(0,len(headers)):
 		dic[headers[header]] = header
 	# print dic
-
-	for i in range(1,len(arr)):
+	header_arr = open("abc.txt").read().split("\t")
+	for i in range(1,len(header_arr)):
+		print "ankit"
+		nws.cell(row=1,column=i).value = header_arr[i]
+	for i in range(2,len(arr)):
 		val = arr[i]
 		for idx,v in enumerate(val):
 			if idx == dic["id"]:
